@@ -8,12 +8,13 @@
 	<button id="mybutton">hello world</button>
 	<script>
 		var b = document.getElementById('mybutton');
-		var handler = function (argument) { alert('Thanks!')
-			// body...
+		var handler = function (argument) {
+			alert('Thanks!')
 		}
-		var handler2 = function (argument) { alert('Thanks!')
-			// body...
+		var handler2 = function (argument) {
+			alert('Thanks!')
 		}
+		// IE9之前不支持addEventListener()和removeEventListener()。IE5及以后版本有了类似的方法attachEvent()和detachEvent()
 		if (b.addEventListener) {
 			console.log('hello')
 			b.addEventListener("click", handler, false);
