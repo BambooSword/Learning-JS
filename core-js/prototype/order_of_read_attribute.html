@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+	<script>
+		function Person() {
+			//name222 : 'Person+name' !!!函数不可以用字面量定义
+			this.name = 'Person+name';
+			
+		}
+		/*var hello = {
+			name: 333
+		}*/
+		// console.log(Person.name222);
+		
+		 Person.prototype.name = 'protptype+name';
+		 
+		var person = new Person();
+		var man = new Person();
+		person.name = 'name of this person';
+		console.log(person.name) // name of this person
+		delete person.name; // delete 删除不掉prototype里的属性
+		console.log(man.name) // Person+name 而不是 protptype+name
+		console.log(person.name) // protptype+name
+
+		// Ⅰ：可以看出属性查找顺序，1实例函数内部；2原型函数内部；3原型链；
+		// Ⅱ：delete 删除不掉prototype里的属性,但如果定义在Person内的属性会访问不到
+		//     其他Person实例还是能正常访问的
+		// Ⅲ：在Person内部访问name为定义属性，如果在外部用Person.name
+		//     不管内部如何定义总是指向function的名字 Person; 
+	</script>
+</body>
+</html>
