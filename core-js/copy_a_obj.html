@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>JS如何复制一个对象</title>
+</head>
+<body>
+	<script>
+		//深复制对象方法    
+		var cloneObj = function (obj) {  
+		    var newObj = {};  
+		    // 判断是否为Array 原文用obj instanceof Array 我改成Array.isArray();
+		    if (Array.isArray(obj)) {   
+		        newObj = [];  
+		    } else if ( typeof obj === "function") { 
+		    // 在这加上function的判断，如果是function直接返回，由于函数的克隆会在内存单独开辟一块空间，互不影响。
+		    	return obj;
+		    }
+		    for (var key in obj) {  
+		        var val = obj[key];  
+		        //newObj[key] = typeof val === 'object' ? arguments.callee(val) : val; //arguments.callee 在哪一个函数中运行，它就代表哪个函数, 一般用在匿名函数中。  
+		        newObj[key] = typeof val === 'object' ? cloneObj(val): val;  
+		      
+		         
+		    }  
+		    return newObj;  
+		};  
+		//测试    
+		var obj = {a:function (){console.log(this.b.c);},b:{c:1}};//设置一个对象 
+		newObj = cloneObj(obj);//复制对象 
+		console.log(newObj) 
+		newObj.b.c=2;//给新对象赋新值  
+		obj.a();//1，不受影响  
+		newObj.a();//2  
+		var obj0 = [1, 3 ,4 ,[3,4]]; // 完美复制数组
+		console.log(typeof obj0); // Array 的typeof 为object
+		newObj0 = cloneObj(obj0);
+		//console.log(newObj0)
+		var obj00 = function hello() { console.log('world') } //  完美复制function
+
+		console.log(obj00)
+		var newObj00 = cloneObj(obj00);
+		newObj00.prototype.hello = "hello";
+		var hhh = new newObj00();
+		 console.log(hhh.hello)
+		console.log(newObj00())
+	</script>
+	<script>
+		// 将对象序列化再解析回来，对象中如果有函数function则不能正确复制
+		var obj2 = {a:1,b:2}  
+		var newObj2 = JSON.parse(JSON.stringify(obj2));   // 如果对象中有Function 直接被忽略 
+		newObj2.a=3;  
+		console.log(obj2);  
+		console.log(newObj2);  
+	</script>
+	<script>
+		// 针对数组对象的方法，用数组方法concat一个空数组
+		var a=[1,2,3];  
+		var b=a;  
+		var c=[].concat(a);  
+		a.push(4);  
+		console.log(b);  // b 就是a 
+		console.log(c);  // c 只是c
+	</script>
+	<script>
+		//深度克隆
+		function deepClone(obj){
+		    var result,oClass=isClass(obj);
+		        //确定result的类型
+		    if(oClass==="Object"){
+		        result={};
+		    }else if(oClass==="Array"){
+		        result=[];
+		    }else{
+		        return obj;
+		    }
+		    for(key in obj){
+		        var copy=obj[key];
+		        if(isClass(copy)=="Object"){
+		            result[key]=arguments.callee(copy);//递归调用
+		        }else if(isClass(copy)=="Array"){
+		            result[key]=arguments.callee(copy);
+		        }else{
+		            result[key]=obj[key];
+		        }
+		    }
+		    return result;
+		}
+		//返回传递给他的任意对象的类
+		function isClass(o){
+		    if(o===null) return "Null";
+		    if(o===undefined) return "Undefined";
+		    return Object.prototype.toString.call(o).slice(8,-1);
+		}
+		var oPerson={
+		    oName:"rookiebob",
+		    oAge:"18",
+		    oAddress:{
+		        province:"beijing"
+		    },    
+		    ofavorite:[
+		        "swimming",
+		        {reading:"history book"}
+		    ],
+		    skill:function(){
+		        console.log("bob is coding");
+		    }
+		};
+		var helloworld = function vvv() { console.log('helloworld'); this.hello = 23;console.log(this)}
+		//深度克隆一个对象
+		var oNew=deepClone(oPerson);
+		 var newhello = deepClone(helloworld);
+		 newhello.hello = 24;
+		 console.log(newhello());
+		oNew.ofavorite[1].reading="picture";
+		console.log(oNew.ofavorite[1].reading);//picture
+		console.log(oPerson.ofavorite[1].reading);//history book
+		 
+		oNew.oAddress.province="shanghai";
+		console.log(oPerson.oAddress.province);//beijing
+		console.log(oNew.oAddress.province);//shanghai
+	</script>
+</body>
+</html>
