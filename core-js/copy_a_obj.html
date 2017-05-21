@@ -106,12 +106,8 @@
 		        console.log("bob is coding");
 		    }
 		};
-		var helloworld = function vvv() { console.log('helloworld'); this.hello = 23;console.log(this)}
 		//深度克隆一个对象
 		var oNew=deepClone(oPerson);
-		 var newhello = deepClone(helloworld);
-		 newhello.hello = 24;
-		 console.log(newhello());
 		oNew.ofavorite[1].reading="picture";
 		console.log(oNew.ofavorite[1].reading);//picture
 		console.log(oPerson.ofavorite[1].reading);//history book
