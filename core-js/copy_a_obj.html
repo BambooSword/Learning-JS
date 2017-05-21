@@ -13,7 +13,7 @@
 		    if (Array.isArray(obj)) {   
 		        newObj = [];  
 		    } else if ( typeof obj === "function") { 
-		    // 在这加上function的判断，如果是function直接返回，由于函数的克隆会在内存单独开辟一块空间，互不影响。
+		    // 在这加上function的判断，如果是function直接返回。
 		    	return obj;
 		    }
 		    for (var key in obj) {  
